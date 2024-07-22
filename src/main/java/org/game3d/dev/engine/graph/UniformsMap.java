@@ -2,6 +2,8 @@ package org.game3d.dev.engine.graph;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
@@ -47,6 +49,18 @@ public class UniformsMap {
                     value.get(stack.mallocFloat(16))
             );
         }
+    }
+
+    public void setUniform(String uniformName, float value) {
+        glUniform1f(this.getUniformLocation(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, @NotNull Vector2f value) {
+        glUniform2f(this.getUniformLocation(uniformName), value.x, value.y);
+    }
+
+    public void setUniform(String uniformName, @NotNull Vector3f value) {
+        glUniform3f(this.getUniformLocation(uniformName), value.x, value.y, value.z);
     }
 
     public void setUniform(String uniformName, @NotNull Vector4f value) {

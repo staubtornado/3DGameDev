@@ -9,8 +9,12 @@ import org.game3d.dev.engine.scene.Camera;
 import org.game3d.dev.engine.scene.Entity;
 import org.game3d.dev.engine.scene.ModelLoader;
 import org.game3d.dev.engine.scene.Scene;
+import org.game3d.dev.engine.scene.lights.PointLight;
+import org.game3d.dev.engine.scene.lights.SceneLights;
+import org.game3d.dev.engine.scene.lights.SpotLight;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -48,6 +52,17 @@ public class Main implements IAppLogic {
         this.cube = new Entity("cube-entity", cubeModel.getId());
         this.cube.setPosition(0, 0, -2);
         scene.addEntity(this.cube);
+
+        SceneLights sceneLights = new SceneLights();
+        sceneLights.getAmbientLight().setIntensity(0);
+        scene.setSceneLights(sceneLights);
+//        sceneLights.getPointLights().add(new PointLight(new Vector3f(1, 1, 1),
+//                new Vector3f(0, 0, -1.4f), 1.0f));
+//
+//        Vector3f coneDir = new Vector3f(0, 0, -1);
+//        sceneLights.getSpotLights().add(new SpotLight(new PointLight(new Vector3f(1, 1, 1),
+//                new Vector3f(0, 0, -1.4f), 0.0f), coneDir, 140.0f));
+
     }
 
     @Override

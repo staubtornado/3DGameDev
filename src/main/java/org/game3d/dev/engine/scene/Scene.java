@@ -1,8 +1,10 @@
 package org.game3d.dev.engine.scene;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.game3d.dev.engine.graph.Model;
 import org.game3d.dev.engine.graph.TextureCache;
+import org.game3d.dev.engine.scene.lights.SceneLights;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -14,6 +16,7 @@ public class Scene {
     private final Projection projection;
     private final TextureCache textureCache;
     private final Camera camera;
+    @Setter private SceneLights sceneLights;
 
     public Scene(int width, int height) {
         this.modelMap = new HashMap<>();
