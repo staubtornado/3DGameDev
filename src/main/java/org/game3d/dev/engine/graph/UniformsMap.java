@@ -29,7 +29,7 @@ public class UniformsMap {
         this.uniforms.put(uniformName, uniformLocation);
     }
 
-    public int getUniformLocation(String uniformName) {
+    private int getUniformLocation(String uniformName) {
         Integer location = this.uniforms.get(uniformName);
         if (location == null) {
             throw new RuntimeException(String.format("Uniform %s not found", uniformName));

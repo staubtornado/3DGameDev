@@ -46,7 +46,7 @@ public class Window {
             this.width = options.width;
             this.height = options.height;
         } else {
-            glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
+            glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
             GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
             if (vidMode == null) {

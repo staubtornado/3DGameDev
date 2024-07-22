@@ -51,10 +51,11 @@ public class Main implements IAppLogic {
 
         this.cube = new Entity("cube-entity", cubeModel.getId());
         this.cube.setPosition(0, 0, -2);
+        this.cube.updateModelMatrix();
         scene.addEntity(this.cube);
 
         SceneLights sceneLights = new SceneLights();
-        sceneLights.getAmbientLight().setIntensity(0);
+        sceneLights.getAmbientLight().setIntensity(0.3f);
         scene.setSceneLights(sceneLights);
 //        sceneLights.getPointLights().add(new PointLight(new Vector3f(1, 1, 1),
 //                new Vector3f(0, 0, -1.4f), 1.0f));
@@ -93,7 +94,7 @@ public class Main implements IAppLogic {
 
     @Override
     public void update(Window window, Scene scene, long diffTimeMillis) {
-        this.cube.updateModelMatrix();
+//        this.cube.updateModelMatrix();
 
     }
 }
