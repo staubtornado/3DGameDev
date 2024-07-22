@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 public class Material {
-    public static final Vector4f DEFAULT_COLOR = new Vector4f(0.0f, 0.0f, 0.0f, 0.0f);
+    public static final Vector4f DEFAULT_COLOR = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 
     @Setter private Vector4f ambientColor;
     @Setter private Vector4f diffuseColor;
