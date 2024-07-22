@@ -17,7 +17,7 @@ public class Mesh {
     @Getter private int vaoId;
     private final List<Integer> vboIdList;
 
-    public Mesh(float @NotNull [] positions, float @NotNull [] textCoords, int @NotNull [] indices) {
+    public Mesh(float @NotNull [] positions, float[] normals, float @NotNull [] textCoords, int @NotNull [] indices) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             this.numVertices = indices.length;
             this.vboIdList = new ArrayList<>();
@@ -25,9 +25,9 @@ public class Mesh {
             this.vaoId = glGenVertexArrays();
             glBindVertexArray(this.vaoId);
 
+            // positions
             int vboId = glGenBuffers();
             this.vboIdList.add(vboId);
-
             FloatBuffer positionsBuffer = stack.callocFloat(positions.length);
             positionsBuffer.put(0, positions);
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
@@ -35,15 +35,27 @@ public class Mesh {
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
+            // normals
+            vboId = glGenBuffers();
+            this.vboIdList.add(vboId);
+            FloatBuffer normalsBuffer = stack.callocFloat(normals.length);
+            normalsBuffer.put(0, normals);
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
+
+            // texture coordinates
             vboId = glGenBuffers();
             this.vboIdList.add(vboId);
             FloatBuffer textureCoordsBuffer = stack.callocFloat(textCoords.length);
             textureCoordsBuffer.put(0, textCoords);
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, textureCoordsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, 0);
 
+            // indices
             vboId = glGenBuffers();
             this.vboIdList.add(vboId);
             IntBuffer indicesBuffer = stack.callocInt(indices.length);
