@@ -57,12 +57,12 @@ public class Main implements IAppLogic {
         SceneLights sceneLights = new SceneLights();
         sceneLights.getAmbientLight().setIntensity(0.3f);
         scene.setSceneLights(sceneLights);
-//        sceneLights.getPointLights().add(new PointLight(new Vector3f(1, 1, 1),
-//                new Vector3f(0, 0, -1.4f), 1.0f));
-//
-//        Vector3f coneDir = new Vector3f(0, 0, -1);
-//        sceneLights.getSpotLights().add(new SpotLight(new PointLight(new Vector3f(1, 1, 1),
-//                new Vector3f(0, 0, -1.4f), 0.0f), coneDir, 140.0f));
+        sceneLights.getPointLights().add(new PointLight(new Vector3f(1, 1, 1),
+                new Vector3f(0, 0, -1.4f), 1.0f));
+
+        Vector3f coneDir = new Vector3f(0, 0, -1);
+        sceneLights.getSpotLights().add(new SpotLight(new PointLight(new Vector3f(1, 1, 1),
+                new Vector3f(0, 0, -1.4f), 0.0f), coneDir, 140.0f));
 
     }
 
