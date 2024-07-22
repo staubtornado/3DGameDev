@@ -21,7 +21,7 @@ public class Engine {
         this.targetFPS = options.fps;
         this.targetUps = options.ups;
         this.appLogic = appLogic;
-        this.render = new Render(this.window);
+        this.render = new Render();
         this.scene = new Scene(this.window.getWidth(), this.window.getHeight());
         this.appLogic.init(this.window, this.scene, this.render);
         this.running = true;
