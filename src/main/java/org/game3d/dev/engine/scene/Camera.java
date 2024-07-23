@@ -28,30 +28,26 @@ public class Camera {
             this.rotation.x += x;
         }
         this.rotation.y += y;
-
-        if (this.rotation.y > 2 * Math.PI) {  // Keep rotation within 0 to 2*PI
-            this.rotation.y = y;
-        } else if (this.rotation.y < 0) {
-            this.rotation.y = (float) (2 * Math.PI);
+        this.rotation.y %= (float) (2 * Math.PI);
+        if (this.rotation.y < 0) {
+            this.rotation.y += (float) (2 * Math.PI);
         }
         this.recalculate();
     }
 
-    public void moveForward(float distance) {
+    private Vector3f getDirection() {
         double x = Math.sin(this.rotation.y) * -1;
         double z = Math.cos(this.rotation.y);
+        return new Vector3f((float) x, 0, (float) z).negate();
+    }
 
-        Vector3f direction = new Vector3f((float) x, 0, (float) z).mul(distance).negate();
-        this.position.add(direction);
+    public void moveForward(float distance) {
+        this.position.add(this.getDirection().mul(distance));
         this.recalculate();
     }
 
     public void moveBackwards(float distance) {
-        double x = Math.sin(this.rotation.y) * -1;
-        double z = Math.cos(this.rotation.y);
-
-        Vector3f direction = new Vector3f((float) x, 0, (float) z).mul(distance).negate();
-        this.position.sub(direction);
+        this.position.sub(this.getDirection().mul(distance));
         this.recalculate();
     }
 
