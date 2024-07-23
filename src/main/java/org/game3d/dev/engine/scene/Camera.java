@@ -27,11 +27,7 @@ public class Camera {
         } else {
             this.rotation.x += x;
         }
-        this.rotation.y += y;
-        this.rotation.y %= (float) (2 * Math.PI);
-        if (this.rotation.y < 0) {
-            this.rotation.y += (float) (2 * Math.PI);
-        }
+        this.rotation.y += y;  // Limitation of y rotation is not necessary, as sin / cos repeats
         this.recalculate();
     }
 
