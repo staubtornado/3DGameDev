@@ -2,6 +2,7 @@ package org.game3d.dev.engine.scene;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.game3d.dev.engine.IGuiInstance;
 import org.game3d.dev.engine.graph.Model;
 import org.game3d.dev.engine.graph.TextureCache;
 import org.game3d.dev.engine.scene.lights.SceneLights;
@@ -17,6 +18,7 @@ public class Scene {
     private final TextureCache textureCache;
     private final Camera camera;
     @Setter private SceneLights sceneLights;
+    @Setter private IGuiInstance guiInstance;
 
     public Scene(int width, int height) {
         this.modelMap = new HashMap<>();

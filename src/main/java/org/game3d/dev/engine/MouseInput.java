@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseInput {
-    private final Vector2f currentPos;
+    @Getter private final Vector2f currentPos;
     private final Vector2f middlePos;
     @Getter final private Vector2f displayVec;
     private boolean inWindow;
