@@ -42,6 +42,9 @@ public class Window {
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         }
 
+        // Enable anti-aliasing
+        glfwWindowHint(GLFW_SAMPLES, 4);
+
         if (options.width > 0 && options.height > 0) {
             this.width = options.width;
             this.height = options.height;
