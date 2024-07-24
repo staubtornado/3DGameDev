@@ -41,6 +41,7 @@ public class Window {
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         }
+        glfwWindowHint(GLFW_DEPTH_BITS, 24);  // Setze 24 Bit für den Tiefenpuffer
 
         // Enable anti-aliasing
         glfwWindowHint(GLFW_SAMPLES, 4);

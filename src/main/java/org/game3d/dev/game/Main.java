@@ -9,17 +9,20 @@ import org.game3d.dev.engine.scene.*;
 import org.game3d.dev.engine.scene.lights.SceneLights;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
+import org.joml.Vector2i;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main implements IAppLogic {
-    private static final int NUM_CHUNKS = 4;
+    private static final int CHUNK_SIZE = 16;
+    private static final int RENDER_DISTANCE = 4;
+
+    private Chunk[][] chunks;
 
     private static final float MOUSE_SENSITIVITY = 0.05f;
     private static final float MOVEMENT_SPEED = 0.05f;
 
-    private Entity[][] terrainEntities;
+
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -47,22 +50,27 @@ public class Main implements IAppLogic {
         );
         scene.addModel(cubeModel);
 
-        int numRows = NUM_CHUNKS * 2 + 1;
-        int numCols = numRows;
-        this.terrainEntities = new Entity[numRows][numCols];
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                Entity entity = new Entity(String.format("TERRAIN_%d_%d", i, j), cubeModelId);
-                this.terrainEntities[i][j] = entity;
-                scene.addEntity(entity);
+        this.chunks = new Chunk[RENDER_DISTANCE * 2 + 1][RENDER_DISTANCE * 2 + 1];
+        for (int i = 0; i < RENDER_DISTANCE * 2 + 1; i++) {
+            for (int j = 0; j < RENDER_DISTANCE * 2 + 1; j++) {
+                int positionX = (i - RENDER_DISTANCE) * CHUNK_SIZE;
+                int positionZ = (j - RENDER_DISTANCE) * CHUNK_SIZE;
+                this.chunks[j][i] = new Chunk(CHUNK_SIZE, 1, new Vector2i(positionX, positionZ), i * CHUNK_SIZE + j);
+                this.chunks[j][i].init();
+
+                for (Entity entity : this.chunks[j][i].getBlocks()) {
+                    scene.addEntity(entity);
+                }
             }
         }
+
+
         SceneLights sceneLights = new SceneLights();
         sceneLights.getAmbientLight().setIntensity(0.2f);
         scene.setSceneLights(sceneLights);
 
         SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
-        skyBox.getSkyBoxEntity().setScale(50);
+        skyBox.getSkyBoxEntity().setScale(500);
         scene.setSkyBox(skyBox);
         scene.getCamera().moveUp(0.1f);
         this.updateTerrain(scene);
@@ -104,26 +112,12 @@ public class Main implements IAppLogic {
     }
 
     public void updateTerrain(@NotNull Scene scene) {
-        int cellSize = 10;
-        Camera camera = scene.getCamera();
-        Vector3f cameraPos = camera.getPosition();
-        int cellCol = (int) (cameraPos.x / cellSize);
-        int cellRow = (int) (cameraPos.z / cellSize);
+        Vector2i cameraPosition = new Vector2i(
+                (int) scene.getCamera().getPosition().x,
+                (int) scene.getCamera().getPosition().z
+        );
 
-        int numRows = NUM_CHUNKS * 2 + 1;
-        int numCols = numRows;
-        int zOffset = -NUM_CHUNKS;
-        float scale = cellSize / 2.0f;
-        for (int j = 0; j < numRows; j++) {
-            int xOffset = -NUM_CHUNKS;
-            for (int i = 0; i < numCols; i++) {
-                Entity entity = terrainEntities[j][i];
-                entity.setScale(scale);
-                entity.setPosition((cellCol + xOffset) * 2.0f, 0, (cellRow + zOffset) * 2.0f);
-                entity.getModelMatrix().identity().scale(scale).translate(entity.getPosition());
-                xOffset++;
-            }
-            zOffset++;
-        }
+
+
     }
 }
