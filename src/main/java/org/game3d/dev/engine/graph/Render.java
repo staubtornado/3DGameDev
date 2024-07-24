@@ -25,6 +25,7 @@ public class Render {
     public void cleanup() {
         this.sceneRender.cleanup();
         this.guiRender.cleanup();
+        this.skyBoxRender.cleanup();
     }
 
     public void render(@NotNull Window window, @NotNull Scene scene) {
