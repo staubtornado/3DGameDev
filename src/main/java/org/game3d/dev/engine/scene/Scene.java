@@ -19,6 +19,7 @@ public class Scene {
     private final Camera camera;
     @Setter private SceneLights sceneLights;
     @Setter private IGuiInstance guiInstance;
+    @Setter private SkyBox skyBox;
 
     public Scene(int width, int height) {
         this.modelMap = new HashMap<>();
