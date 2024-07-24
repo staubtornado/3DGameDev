@@ -47,7 +47,7 @@ public class Engine {
         float deltaFPS = 0;
 
         long updateTime = initialTime;
-        IGuiInstance iGuiInstance = scene.getGuiInstance();
+        IGuiInstance iGuiInstance = this.scene.getGuiInstance();
         while (this.running && !this.window.windowShouldClose()) {
             this.window.pollEvents();
 
@@ -58,7 +58,7 @@ public class Engine {
             if (this.targetFPS <= 0 || deltaFPS >= 1) {
                 this.window.getMouseInput().input();
                 boolean inputConsumed = iGuiInstance != null && iGuiInstance.handleGuiInput(this.scene, this.window);
-                this.appLogic.input(this.window, scene, now - initialTime, inputConsumed);
+                this.appLogic.input(this.window, this.scene, now - initialTime, inputConsumed);
             }
 
             if (deltaUpdate >= 1) {
