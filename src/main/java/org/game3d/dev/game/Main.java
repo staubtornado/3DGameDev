@@ -100,6 +100,7 @@ public class Main implements IAppLogic {
 
     @Override
     public void update(Window window, Scene scene, long diffTimeMillis) {
+        this.updateTerrain(scene);
     }
 
     public void updateTerrain(@NotNull Scene scene) {
