@@ -72,15 +72,25 @@ public class SceneRender {
         this.uniformsMap.createUniform("dirLight.color");
         this.uniformsMap.createUniform("dirLight.direction");
         this.uniformsMap.createUniform("dirLight.intensity");
+
+        this.uniformsMap.createUniform("fog.activeFog");
+        this.uniformsMap.createUniform("fog.color");
+        this.uniformsMap.createUniform("fog.density");
     }
 
     public void render(@NotNull Scene scene) {
+        glEnable(GL_BLEND);
+        glBlendEquation(GL_FUNC_ADD);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         this.shaderProgram.bind();
 
         this.uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjectionMatrix());
         this.uniformsMap.setUniform("viewMatrix", scene.getCamera().getViewMatrix());
-
         this.uniformsMap.setUniform("txtSampler", 0);
+
+        this.uniformsMap.setUniform("fog.activeFog", scene.getFog().isActive() ? 1 : 0);
+        this.uniformsMap.setUniform("fog.color", scene.getFog().getColor());
+        this.uniformsMap.setUniform("fog.density", scene.getFog().getDensity());
 
         updateLights(scene);
 
@@ -109,8 +119,8 @@ public class SceneRender {
         }
 
         glBindVertexArray(0);
-
         this.shaderProgram.unbind();
+        glDisable(GL_BLEND);
     }
 
     private void updateLights(@NotNull Scene scene) {

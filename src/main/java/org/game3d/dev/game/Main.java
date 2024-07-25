@@ -10,6 +10,7 @@ import org.game3d.dev.engine.scene.lights.SceneLights;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -64,15 +65,15 @@ public class Main implements IAppLogic {
             }
         }
 
-
         SceneLights sceneLights = new SceneLights();
-        sceneLights.getAmbientLight().setIntensity(0.2f);
+        sceneLights.getAmbientLight().setIntensity(0.0f);
         scene.setSceneLights(sceneLights);
+        scene.setFog(new Fog(true, CONST.SKY_COLOR, 0.05f));
 
         SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
         skyBox.getSkyBoxEntity().setScale(500);
-        scene.setSkyBox(skyBox);
-        scene.getCamera().moveUp(0.1f);
+//        scene.setSkyBox(skyBox);
+        scene.getCamera().moveUp(1);
         this.updateTerrain(scene);
     }
 

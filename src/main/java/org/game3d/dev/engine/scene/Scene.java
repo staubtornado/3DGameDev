@@ -20,12 +20,14 @@ public class Scene {
     @Setter private SceneLights sceneLights;
     @Setter private IGuiInstance guiInstance;
     @Setter private SkyBox skyBox;
+    @Setter private Fog fog;
 
     public Scene(int width, int height) {
         this.modelMap = new HashMap<>();
         this.projection = new Projection(width, height);
         this.textureCache = new TextureCache();
         this.camera = new Camera();
+        this.fog = new Fog();
     }
 
     public void addEntity(@NotNull Entity entity) {

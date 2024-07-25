@@ -2,6 +2,7 @@ package org.game3d.dev.engine.graph;
 
 import org.game3d.dev.engine.Window;
 import org.game3d.dev.engine.scene.Scene;
+import org.game3d.dev.game.CONST;
 import org.jetbrains.annotations.NotNull;
 
 import static org.lwjgl.opengl.GL.createCapabilities;
@@ -14,6 +15,8 @@ public class Render {
 
     public Render(Window window) {
         createCapabilities();
+        // Set the clear color to light blue
+        glClearColor(CONST.SKY_COLOR.x, CONST.SKY_COLOR.y, CONST.SKY_COLOR.z, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
