@@ -143,10 +143,21 @@ public class ModelLoader {
                     (IntBuffer) null, null, null, null, null, null
             );
             String texturePath = aiTexturePath.dataString();
-            if (texturePath != null && texturePath.length() > 0) {
+            if (!texturePath.isEmpty()) {
                 material.setTexturePath(modelDir + File.separator + new File(texturePath).getName());
                 textureCache.createTexture(material.getTexturePath());
                 material.setDiffuseColor(Material.DEFAULT_COLOR);
+            }
+
+            AIString aiNormalMapPath = AIString.calloc(stack);
+            Assimp.aiGetMaterialTexture(
+                    aiMaterial, aiTextureType_NORMALS, 0, aiNormalMapPath,
+                    (IntBuffer) null, null, null, null, null, null
+            );
+            String normalMapPath = aiNormalMapPath.dataString();
+            if (!normalMapPath.isEmpty()) {
+                material.setNormalMapPath(modelDir + File.separator + new File(normalMapPath).getName());
+                textureCache.createTexture(material.getNormalMapPath());
             }
 
             return material;
@@ -157,6 +168,8 @@ public class ModelLoader {
     private static @NotNull Mesh processMesh(AIMesh aiMesh) {
         float[] vertices = processVertices(aiMesh);
         float[] normals = processNormals(aiMesh);
+        float[] tangents = processTangents(aiMesh, normals);
+        float[] biTangents = processBiTangents(aiMesh, normals);
         float[] textCoords = processTextCoords(aiMesh);
         int[] indices = processIndices(aiMesh);
 
@@ -164,21 +177,15 @@ public class ModelLoader {
             int numElements = vertices.length / 3 * 2;
             textCoords = new float[numElements];
         }
-        return new Mesh(vertices, normals, textCoords, indices);
+        return new Mesh(vertices, normals, tangents, biTangents, textCoords, indices);
     }
 
     private static float @NotNull [] processNormals(@NotNull AIMesh aiMesh) {
         AIVector3D.Buffer buffer = aiMesh.mNormals();
-        assert buffer != null;
-        float[] data = new float[buffer.remaining() * 3];
-        int pos = 0;
-        while (buffer.remaining() > 0) {
-            AIVector3D normal = buffer.get();
-            data[pos++] = normal.x();
-            data[pos++] = normal.y();
-            data[pos++] = normal.z();
+        if (buffer == null) {
+            return new float[]{};
         }
-        return data;
+        return getData(0, buffer);
     }
 
     private static float @NotNull [] processTextCoords(@NotNull AIMesh aiMesh) {
@@ -198,13 +205,37 @@ public class ModelLoader {
 
     private static float @NotNull [] processVertices(@NotNull AIMesh aiMesh) {
         AIVector3D.Buffer buffer = aiMesh.mVertices();
+        return getData(0, buffer);
+    }
+
+    private static float @NotNull [] processBiTangents(@NotNull AIMesh aiMesh, float[] normals) {
+        AIVector3D.Buffer buffer = aiMesh.mBitangents();
+        if (buffer == null) {
+            return new float[]{};
+        }
+        return getData(normals.length, buffer);
+    }
+
+    private static float @NotNull [] processTangents(@NotNull AIMesh aiMesh, float[] normals) {
+        AIVector3D.Buffer buffer = aiMesh.mTangents();
+        if (buffer == null) {
+            return new float[]{};
+        }
+        return getData(normals.length, buffer);
+    }
+
+    private static float @NotNull [] getData(int length, AIVector3D.@NotNull Buffer buffer) {
         float[] data = new float[buffer.remaining() * 3];
         int pos = 0;
-        while (buffer.remaining() > 0) {
-            AIVector3D vec = buffer.get();
-            data[pos++] = vec.x();
-            data[pos++] = vec.y();
-            data[pos++] = vec.z();
+        while (buffer.hasRemaining()) {
+            AIVector3D aiTangent = buffer.get();
+            data[pos++] = aiTangent.x();
+            data[pos++] = aiTangent.y();
+            data[pos++] = aiTangent.z();
+        }
+
+        if (data.length == 0) {
+            data = new float[length];
         }
         return data;
     }

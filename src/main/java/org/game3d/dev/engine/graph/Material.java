@@ -17,6 +17,7 @@ public class Material {
     @Setter private float reflectance;
     @Setter private Vector4f specularColor;
     @Setter private String texturePath;
+    @Setter private String normalMapPath;
 
     public Material() {
         this.diffuseColor = DEFAULT_COLOR;

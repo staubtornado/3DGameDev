@@ -17,7 +17,14 @@ public class Mesh {
     @Getter private int vaoId;
     private final List<Integer> vboIdList;
 
-    public Mesh(float @NotNull [] positions, float[] normals, float @NotNull [] textCoords, int @NotNull [] indices) {
+    public Mesh(
+            float @NotNull [] positions,
+            float @NotNull [] normals,
+            float @NotNull [] tangents,
+            float @NotNull [] biTangents,
+            float @NotNull [] textCoords,
+            int @NotNull [] indices
+    ) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             this.numVertices = indices.length;
             this.vboIdList = new ArrayList<>();
@@ -45,6 +52,26 @@ public class Mesh {
             glEnableVertexAttribArray(1);
             glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
+            // tangents
+            vboId = glGenBuffers();
+            this.vboIdList.add(vboId);
+            FloatBuffer tangentsBuffer = stack.callocFloat(tangents.length);
+            tangentsBuffer.put(0, tangents);
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, tangentsBuffer, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
+
+            // biTangents
+            vboId = glGenBuffers();
+            this.vboIdList.add(vboId);
+            FloatBuffer biTangentsBuffer = stack.callocFloat(biTangents.length);
+            biTangentsBuffer.put(0, biTangents);
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, biTangentsBuffer, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(3);
+            glVertexAttribPointer(3, 3, GL_FLOAT, false, 0, 0);
+
             // texture coordinates
             vboId = glGenBuffers();
             this.vboIdList.add(vboId);
@@ -52,8 +79,8 @@ public class Mesh {
             textureCoordsBuffer.put(0, textCoords);
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, textureCoordsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, 0);
+            glEnableVertexAttribArray(4);
+            glVertexAttribPointer(4, 2, GL_FLOAT, false, 0, 0);
 
             // indices
             vboId = glGenBuffers();
