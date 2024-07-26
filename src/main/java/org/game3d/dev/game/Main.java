@@ -10,7 +10,6 @@ import org.game3d.dev.engine.scene.lights.SceneLights;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -31,7 +30,8 @@ public class Main implements IAppLogic {
                 false,
                 200,
                 800,
-                1600
+                1600,
+                true
         ), main);
         engine.start();
     }
@@ -66,12 +66,12 @@ public class Main implements IAppLogic {
         }
 
         SceneLights sceneLights = new SceneLights();
-        sceneLights.getAmbientLight().setIntensity(0.0f);
+        sceneLights.getAmbientLight().setIntensity(0.3f);
         scene.setSceneLights(sceneLights);
-        scene.setFog(new Fog(true, CONST.SKY_COLOR, 0.05f));
+        scene.setFog(new Fog(true, CONST.SKY_COLOR, 0.01f));
 
-        SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
-        skyBox.getSkyBoxEntity().setScale(500);
+//        SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
+//        skyBox.getSkyBoxEntity().setScale(500);
 //        scene.setSkyBox(skyBox);
         scene.getCamera().moveUp(1);
         this.updateTerrain(scene);
@@ -113,12 +113,5 @@ public class Main implements IAppLogic {
     }
 
     public void updateTerrain(@NotNull Scene scene) {
-        Vector2i cameraPosition = new Vector2i(
-                (int) scene.getCamera().getPosition().x,
-                (int) scene.getCamera().getPosition().z
-        );
-
-
-
     }
 }

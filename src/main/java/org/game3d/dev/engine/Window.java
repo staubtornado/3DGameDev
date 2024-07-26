@@ -33,6 +33,10 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
+        // Enable anti-aliasing
+        if (options.antialiasing) {
+            glfwWindowHint(GLFW_SAMPLES, 4);
+        }
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         if (options.compatibleProfile) {
@@ -41,10 +45,7 @@ public class Window {
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         }
-        glfwWindowHint(GLFW_DEPTH_BITS, 24);  // Setze 24 Bit für den Tiefenpuffer
-
-        // Enable anti-aliasing
-        glfwWindowHint(GLFW_SAMPLES, 4);
+//        glfwWindowHint(GLFW_DEPTH_BITS, 24);  // Setze 24 Bit für den Tiefenpuffer
 
         if (options.width > 0 && options.height > 0) {
             this.width = options.width;
@@ -140,5 +141,6 @@ public class Window {
         public final int height;
         public final int ups = Engine.TARGET_UPS;
         public final int width;
+        public final boolean antialiasing;
     }
 }
