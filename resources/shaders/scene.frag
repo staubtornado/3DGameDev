@@ -127,11 +127,11 @@ vec4 calcDirLight(vec4 diffuse, vec4 specular, DirLight light, vec3 position, ve
 vec4 calcFog(vec3 pos, vec4 color, Fog fog, vec3 ambientLight, DirLight dirLight) {
     vec3 fogColor = fog.color * (ambientLight + dirLight.color * dirLight.intensity);
     float distance = length(pos);
-    float fogFactor = 1.0 / exp2(distance * fog.density);
+    float fogFactor = 1.0 - exp(-distance * fog.density);
     fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-    vec3 resultColor = mix(fogColor, color.xyz, fogFactor);
-    return vec4(resultColor.xyz, color.w);
+    vec3 resultColor = mix(color.xyz, fog.color, fogFactor);
+    return vec4(resultColor, color.w);
 }
 
 vec3 calcNormal(vec3 normal, vec3 tangent, vec3 bitangent, vec2 textCoords) {
