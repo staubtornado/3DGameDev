@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 public class Render {
     private final SceneRender sceneRender;
@@ -17,6 +18,7 @@ public class Render {
         createCapabilities();
         // Set the clear color to light blue
         glClearColor(CONST.SKY_COLOR.x, CONST.SKY_COLOR.y, CONST.SKY_COLOR.z, 1.0f);
+        glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
