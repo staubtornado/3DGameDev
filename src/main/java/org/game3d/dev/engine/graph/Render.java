@@ -34,9 +34,11 @@ public class Render {
         this.sceneRender.cleanup();
         this.guiRender.cleanup();
         this.skyBoxRender.cleanup();
+        this.shadowRender.cleanup();
     }
 
     public void render(@NotNull Window window, @NotNull Scene scene) {
+        this.shadowRender.render(scene);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, window.getWidth(), window.getHeight());
 

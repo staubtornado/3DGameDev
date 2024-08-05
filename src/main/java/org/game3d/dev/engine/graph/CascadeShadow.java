@@ -38,7 +38,7 @@ public class CascadeShadow {
         float ratio = maxZ / nearClip;
 
         for (int i = 0; i < SHADOW_MAP_CASCADE_COUNT; i++) {
-            float p = (i + 1) / (float) SHADOW_MAP_CASCADE_COUNT;
+            float p = (i + 1) / (float) (SHADOW_MAP_CASCADE_COUNT);
             float log = (float) (nearClip * Math.pow(ratio, p));
             float uniform = nearClip + range * p;
             float d = cascadeSplitLambda * (log - uniform) + uniform;
@@ -60,9 +60,10 @@ public class CascadeShadow {
                     new Vector3f(-1.0f, -1.0f, 1.0f),
             };
 
-            Matrix4f invCamera = new Matrix4f(projectionMatrix).mul(viewMatrix).invert();
+            // Project frustum corners into world space
+            Matrix4f invCam = (new Matrix4f(projectionMatrix).mul(viewMatrix)).invert();
             for (int j = 0; j < 8; j++) {
-                Vector4f invCorner = new Vector4f(frustumCorners[j], 1.0f).mul(invCamera);
+                Vector4f invCorner = new Vector4f(frustumCorners[j], 1.0f).mul(invCam);
                 frustumCorners[j] = new Vector3f(
                         invCorner.x / invCorner.w,
                         invCorner.y / invCorner.w,
@@ -84,7 +85,7 @@ public class CascadeShadow {
 
             float radius = 0.0f;
             for (int j = 0; j < 8; j++) {
-                float distance = new Vector3f(frustumCorners[j]).sub(frustumCenter).length();
+                float distance = (new Vector3f(frustumCorners[j]).sub(frustumCenter)).length();
                 radius = Math.max(radius, distance);
             }
             radius = (float) Math.ceil(radius * 16.0f) / 16.0f;
@@ -92,14 +93,12 @@ public class CascadeShadow {
             Vector3f maxExtents = new Vector3f(radius);
             Vector3f minExtents = new Vector3f(maxExtents).mul(-1);
 
-            Vector3f lightDir = new Vector3f(lightPosition.x, lightPosition.y, lightPosition.z).mul(-1).normalize();
+            Vector3f lightDir = (new Vector3f(lightPosition.x, lightPosition.y, lightPosition.z).mul(-1)).normalize();
             Vector3f eye = new Vector3f(frustumCenter).sub(new Vector3f(lightDir).mul(-minExtents.z));
-            Vector3f up = new Vector3f().zero();
+            Vector3f up = new Vector3f(0.0f, 1.0f, 0.0f);
             Matrix4f lightViewMatrix = new Matrix4f().lookAt(eye, frustumCenter, up);
-            Matrix4f lightOrthogonalMatrix = new Matrix4f().ortho(
-                    minExtents.x, maxExtents.x,
-                    minExtents.y, maxExtents.y, 0.0f, maxExtents.z - minExtents.z, true
-            );
+            Matrix4f lightOrthogonalMatrix = new Matrix4f().ortho
+                    (minExtents.x, maxExtents.x, minExtents.y, maxExtents.y, 0.0f, maxExtents.z - minExtents.z, true);
 
             CascadeShadow cascadeShadow = cascadeShadows.get(i);
             cascadeShadow.splitDistance = (nearClip + splitDist * clipRange) * -1.0f;

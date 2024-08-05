@@ -97,6 +97,12 @@ public class SceneRender {
         this.uniformsMap.setUniform("txtSampler", 0);
         this.uniformsMap.setUniform("normalSampler", 1);
 
+        updateLights(scene);
+
+        this.uniformsMap.setUniform("fog.activeFog", scene.getFog().isActive() ? 1 : 0);
+        this.uniformsMap.setUniform("fog.color", scene.getFog().getColor());
+        this.uniformsMap.setUniform("fog.density", scene.getFog().getDensity());
+
         int start = 2;
         List<CascadeShadow> cascadeShadows = shadowRender.getCascadeShadows();
         for (int i = 0; i < CascadeShadow.SHADOW_MAP_CASCADE_COUNT; i++) {
@@ -106,12 +112,6 @@ public class SceneRender {
             this.uniformsMap.setUniform("cascadeshadows[" + i + "].splitDistance", cascadeShadow.getSplitDistance());
         }
         shadowRender.getShadowBuffer().bindTextures(GL_TEXTURE2);
-
-        updateLights(scene);
-
-        this.uniformsMap.setUniform("fog.activeFog", scene.getFog().isActive() ? 1 : 0);
-        this.uniformsMap.setUniform("fog.color", scene.getFog().getColor());
-        this.uniformsMap.setUniform("fog.density", scene.getFog().getDensity());
 
         Collection<Model> models = scene.getModelMap().values();
         TextureCache textureCache = scene.getTextureCache();
