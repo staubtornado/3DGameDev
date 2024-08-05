@@ -78,9 +78,15 @@ public class SceneRender {
         this.uniformsMap.createUniform("fog.activeFog");
         this.uniformsMap.createUniform("fog.color");
         this.uniformsMap.createUniform("fog.density");
+
+        for (int i = 0; i < CascadeShadow.SHADOW_MAP_CASCADE_COUNT; i++) {
+            this.uniformsMap.createUniform(String.format("shadowMap[%d]", i));
+            this.uniformsMap.createUniform(String.format("cascadeshadows[%d].projViewMatrix", i));
+            this.uniformsMap.createUniform(String.format("cascadeshadows[%d].splitDistance", i));
+        }
     }
 
-    public void render(@NotNull Scene scene) {
+    public void render(@NotNull Scene scene, @NotNull ShadowRender shadowRender) {
         glEnable(GL_BLEND);
         glBlendEquation(GL_FUNC_ADD);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -90,6 +96,16 @@ public class SceneRender {
         this.uniformsMap.setUniform("viewMatrix", scene.getCamera().getViewMatrix());
         this.uniformsMap.setUniform("txtSampler", 0);
         this.uniformsMap.setUniform("normalSampler", 1);
+
+        int start = 2;
+        List<CascadeShadow> cascadeShadows = shadowRender.getCascadeShadows();
+        for (int i = 0; i < CascadeShadow.SHADOW_MAP_CASCADE_COUNT; i++) {
+            this.uniformsMap.setUniform(String.format("shadowMap[%d]", i), start + i);
+            CascadeShadow cascadeShadow = cascadeShadows.get(i);
+            this.uniformsMap.setUniform("cascadeshadows[" + i + "].projViewMatrix", cascadeShadow.getProjectionMatrix());
+            this.uniformsMap.setUniform("cascadeshadows[" + i + "].splitDistance", cascadeShadow.getSplitDistance());
+        }
+        shadowRender.getShadowBuffer().bindTextures(GL_TEXTURE2);
 
         updateLights(scene);
 

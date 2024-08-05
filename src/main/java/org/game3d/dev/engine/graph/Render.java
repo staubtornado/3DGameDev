@@ -13,6 +13,7 @@ public class Render {
     private final SceneRender sceneRender;
     private final GuiRender guiRender;
     private final SkyBoxRender skyBoxRender;
+    private final ShadowRender shadowRender;
 
     public Render(Window window) {
         createCapabilities();
@@ -22,9 +23,11 @@ public class Render {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         this.sceneRender = new SceneRender();
         this.guiRender = new GuiRender(window);
         this.skyBoxRender = new SkyBoxRender();
+        this.shadowRender = new ShadowRender();
     }
 
     public void cleanup() {
@@ -38,7 +41,7 @@ public class Render {
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         this.skyBoxRender.render(scene);
-        this.sceneRender.render(scene);
+        this.sceneRender.render(scene, this.shadowRender);
         this.guiRender.render(scene);
     }
 
