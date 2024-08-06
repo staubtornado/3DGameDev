@@ -6,12 +6,10 @@ import org.game3d.dev.engine.MouseInput;
 import org.game3d.dev.engine.Window;
 import org.game3d.dev.engine.graph.*;
 import org.game3d.dev.engine.scene.*;
-import org.game3d.dev.engine.scene.lights.DirLight;
 import org.game3d.dev.engine.scene.lights.SceneLights;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
-import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -23,7 +21,6 @@ public class Main implements IAppLogic {
 
     private static final float MOUSE_SENSITIVITY = 0.05f;
     private static final float MOVEMENT_SPEED = 0.05f;
-    private float lightAngle;
 
 
 
@@ -73,18 +70,11 @@ public class Main implements IAppLogic {
         scene.setSceneLights(sceneLights);
         scene.setFog(new Fog(true, CONST.SKY_COLOR, 0.01f));
 
-        DirLight dirLight = sceneLights.getDirLight();
-        dirLight.setDirection(new Vector3f(0, 1, 0));
-        dirLight.setIntensity(1.0f);
-        scene.setSceneLights(sceneLights);
-
-
 //        SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
 //        skyBox.getSkyBoxEntity().setScale(500);
 //        scene.setSkyBox(skyBox);
         scene.getCamera().moveUp(1);
         this.updateTerrain(scene);
-        this.lightAngle = 45.001f;
     }
 
     @Override
@@ -110,28 +100,11 @@ public class Main implements IAppLogic {
         } else if (window.isKeyPressed(GLFW_KEY_LEFT_CONTROL)) {
             camera.moveDown(move);
         }
-        if (window.isKeyPressed(GLFW_KEY_LEFT)) {
-            lightAngle -= 2.5f;
-            if (lightAngle < -90) {
-                lightAngle = -90;
-            }
-        } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
-            lightAngle += 2.5f;
-            if (lightAngle > 90) {
-                lightAngle = 90;
-            }
-        }
 
         MouseInput mouseInput = window.getMouseInput();
         Vector2f displayVec = mouseInput.getDisplayVec();
         camera.addRotation((float) Math.toRadians(-displayVec.x * MOUSE_SENSITIVITY),
                 (float) Math.toRadians(-displayVec.y * MOUSE_SENSITIVITY));
-
-        SceneLights sceneLights = scene.getSceneLights();
-        DirLight dirLight = sceneLights.getDirLight();
-        double angRad = Math.toRadians(lightAngle);
-        dirLight.getDirection().z = (float) Math.sin(angRad);
-        dirLight.getDirection().y = (float) Math.cos(angRad);
     }
 
     @Override
