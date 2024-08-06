@@ -25,7 +25,7 @@ public class Chunk {
             for (int y = 0; y < this.entities[0].length; y++) {
                 for (int z = 0; z < this.entities[0][0].length; z++) {
                     Entity entity = new Entity(String.format("cube-%d-%d-%d-%d", this.id, x, y, z), "cube-model");
-                    entity.setPosition((x + this.position.x), (int) (Math.random() * 5), (z + this.position.y));
+                    entity.setPosition((x + this.position.x), y, (z + this.position.y));
                     entity.getModelMatrix().identity().translate(entity.getPosition());
                     this.entities[x][y][z] = entity;
                 }
