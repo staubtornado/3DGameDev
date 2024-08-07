@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,5 +66,16 @@ public class UniformsMap {
 
     public void setUniform(String uniformName, @NotNull Vector4f value) {
         glUniform4f(this.getUniformLocation(uniformName), value.x, value.y, value.z, value.w);
+    }
+
+    public void setUniform(String uniformName, Matrix4f[] matrices) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            int length = matrices != null ? matrices.length : 0;
+            FloatBuffer floatBuffer = stack.mallocFloat(16 * length);
+            for (int i = 0; i < length; i++) {
+                matrices[i].get(16 * i, floatBuffer);
+            }
+            glUniformMatrix4fv(this.uniforms.get(uniformName), false, floatBuffer);
+        }
     }
 }
