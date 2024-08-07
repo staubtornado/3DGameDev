@@ -13,7 +13,7 @@
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lwjgl.version>3.3.4</lwjgl.version>
-        <joml.version>1.10.7</joml.version>
+        <joml.version>1.10.8</joml.version>
         <imgui-java.version>1.86.11</imgui-java.version>
     </properties>
 
