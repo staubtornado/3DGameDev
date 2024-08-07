@@ -23,7 +23,7 @@ public class Main implements IAppLogic {
     private static final float MOUSE_SENSITIVITY = 0.05f;
     private static final float MOVEMENT_SPEED = 0.05f;
 
-
+    private AnimationData animationData;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -48,7 +48,8 @@ public class Main implements IAppLogic {
         Model cubeModel = ModelLoader.loadModel(
                 cubeModelId,
                 "resources/models/cube/cube.obj",
-                scene.getTextureCache()
+                scene.getTextureCache(),
+                false
         );
         scene.addModel(cubeModel);
 
@@ -65,6 +66,17 @@ public class Main implements IAppLogic {
                 }
             }
         }
+
+        String bobModelId = "bobModel";
+        Model bobModel = ModelLoader.loadModel(bobModelId, "resources/models/bob/boblamp.md5mesh",
+                scene.getTextureCache(), true);
+        scene.addModel(bobModel);
+        Entity bobEntity = new Entity("bobEntity", bobModelId);
+        bobEntity.setScale(0.05f);
+        bobEntity.updateModelMatrix();
+        animationData = new AnimationData(bobModel.getAnimations().getFirst());
+        bobEntity.setAnimationData(animationData);
+        scene.addEntity(bobEntity);
 
         SceneLights sceneLights = new SceneLights();
         sceneLights.getAmbientLight().setIntensity(0.3f);

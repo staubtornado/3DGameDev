@@ -1,5 +1,6 @@
 package org.game3d.dev.engine.graph;
 
+import org.game3d.dev.engine.scene.AnimationData;
 import org.game3d.dev.engine.scene.Entity;
 import org.game3d.dev.engine.scene.Scene;
 import org.game3d.dev.engine.scene.lights.*;
@@ -40,6 +41,7 @@ public class SceneRender {
         this.uniformsMap.createUniform("projectionMatrix");
         this.uniformsMap.createUniform("modelMatrix");
         this.uniformsMap.createUniform("viewMatrix");
+        this.uniformsMap.createUniform("bonesMatrices");
         this.uniformsMap.createUniform("txtSampler");
         this.uniformsMap.createUniform("normalSampler");
         this.uniformsMap.createUniform("material.ambient");
@@ -124,6 +126,12 @@ public class SceneRender {
                     glBindVertexArray(mesh.getVaoId());
                     for (Entity entity : entities) {
                         this.uniformsMap.setUniform("modelMatrix", entity.getModelMatrix());
+                        AnimationData animationData = entity.getAnimationData();
+                        if (animationData == null) {
+                            this.uniformsMap.setUniform("bonesMatrices", AnimationData.DEFAULT_BONE_MATRICES);
+                        } else {
+                            this.uniformsMap.setUniform("bonesMatrices", animationData.getCurrentFrame().boneMatrices());
+                        }
                         glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
                     }
                 }
@@ -132,7 +140,7 @@ public class SceneRender {
 
         glBindVertexArray(0);
         this.shaderProgram.unbind();
-        glDisable(GL_BLEND);
+//        glDisable(GL_BLEND);
     }
 
     private void updateLights(@NotNull Scene scene) {

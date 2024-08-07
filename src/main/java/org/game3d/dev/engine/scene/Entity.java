@@ -13,6 +13,7 @@ public class Entity {
     private final Matrix4f modelMatrix;
     private final Vector3f position;
     private final Quaternionf rotation;
+    @Setter private AnimationData animationData;
     @Setter private float scale;
 
     public Entity(String id, String modelId) {

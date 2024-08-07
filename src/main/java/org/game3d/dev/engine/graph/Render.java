@@ -20,9 +20,9 @@ public class Render {
         glClearColor(CONST.SKY_COLOR.x, CONST.SKY_COLOR.y, CONST.SKY_COLOR.z, 1.0f);
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);
+//        glEnable(GL_CULL_FACE);
+//        glCullFace(GL_BACK);
+//        glFrontFace(GL_CCW);
         this.sceneRender = new SceneRender();
         this.guiRender = new GuiRender(window);
         this.skyBoxRender = new SkyBoxRender();
