@@ -13,8 +13,8 @@ import java.util.List;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
-    @Getter private int numVertices;
-    @Getter private int vaoId;
+    @Getter private final int numVertices;
+    @Getter private final int vaoId;
     private final List<Integer> vboIdList;
 
     public Mesh(

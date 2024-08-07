@@ -22,6 +22,7 @@ public class Render {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
         this.sceneRender = new SceneRender();
         this.guiRender = new GuiRender(window);
         this.skyBoxRender = new SkyBoxRender();

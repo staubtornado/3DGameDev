@@ -7,6 +7,7 @@ import org.game3d.dev.engine.Window;
 import org.game3d.dev.engine.graph.*;
 import org.game3d.dev.engine.scene.*;
 import org.game3d.dev.engine.scene.lights.SceneLights;
+import org.game3d.dev.game.scene.Chunk;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
@@ -28,7 +29,7 @@ public class Main implements IAppLogic {
         Main main = new Main();
         Engine engine = new Engine("Game 3D Dev", new Window.WindowOptions(
                 false,
-                200,
+                100000,
                 800,
                 1600,
                 true
