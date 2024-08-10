@@ -249,11 +249,10 @@ public class ModelLoader {
         }
 
         for (int i = 0; i < numAnimNodes; i++) {
-            try (AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(i))) {
-                if (nodeName.equals(aiNodeAnim.mNodeName().dataString())) {
-                    result = aiNodeAnim;
-                    break;
-                }
+            AINodeAnim aiNodeAnim = AINodeAnim.create(aiChannels.get(i));
+            if (nodeName.equals(aiNodeAnim.mNodeName().dataString())) {
+                result = aiNodeAnim;
+                break;
             }
         }
         return result;
@@ -266,7 +265,7 @@ public class ModelLoader {
         for (int i = 0; i < numFaces; i++) {
             AIFace aiFace = aiFaces.get(i);
             IntBuffer buffer = aiFace.mIndices();
-            while (buffer.remaining() > 0) {
+            while (buffer.hasRemaining()) {
                 indices.add(buffer.get());
             }
         }
