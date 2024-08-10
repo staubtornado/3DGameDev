@@ -115,12 +115,24 @@ public class ModelLoader {
 
     @Contract("_ -> new")
     private static @NotNull Matrix4f toMatrix(@NotNull AIMatrix4x4 aiMatrix4x4) {
-        return new Matrix4f(
-                aiMatrix4x4.a1(), aiMatrix4x4.a2(), aiMatrix4x4.a3(), aiMatrix4x4.a4(),
-                aiMatrix4x4.b1(), aiMatrix4x4.b2(), aiMatrix4x4.b3(), aiMatrix4x4.b4(),
-                aiMatrix4x4.c1(), aiMatrix4x4.c2(), aiMatrix4x4.c3(), aiMatrix4x4.c4(),
-                aiMatrix4x4.d1(), aiMatrix4x4.d2(), aiMatrix4x4.d3(), aiMatrix4x4.d4()
-        );
+        Matrix4f result = new Matrix4f();
+        result.m00(aiMatrix4x4.a1());
+        result.m10(aiMatrix4x4.a2());
+        result.m20(aiMatrix4x4.a3());
+        result.m30(aiMatrix4x4.a4());
+        result.m01(aiMatrix4x4.b1());
+        result.m11(aiMatrix4x4.b2());
+        result.m21(aiMatrix4x4.b3());
+        result.m31(aiMatrix4x4.b4());
+        result.m02(aiMatrix4x4.c1());
+        result.m12(aiMatrix4x4.c2());
+        result.m22(aiMatrix4x4.c3());
+        result.m32(aiMatrix4x4.c4());
+        result.m03(aiMatrix4x4.d1());
+        result.m13(aiMatrix4x4.d2());
+        result.m23(aiMatrix4x4.d3());
+        result.m33(aiMatrix4x4.d4());
+        return result;
     }
 
     private static @NotNull List<Model.Animation> processAnimations(
